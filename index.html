@@ -120,7 +120,8 @@
             </div>
 
             <div class="flex items-center space-x-3">
-                <button onclick="openApiModal()" class="clay-btn px-4 py-2 text-xs font-semibold text-slate-600 flex items-center gap-2">
+                <!-- Tetapan Backend (Hanya untuk Admin / Developer) -->
+                <button onclick="openApiModal()" class="clay-btn px-4 py-2 text-xs font-semibold text-slate-600 flex items-center gap-2" title="Tetapan Web App URL Admin">
                     <i class="fa-solid fa-gear text-teal-600"></i> Backend URL
                 </button>
                 <div id="userInfoHeader" class="hidden flex items-center gap-3 pl-2 border-l border-slate-300">
@@ -266,22 +267,31 @@
                     <p id="lecRoleDisplay" class="text-xs text-slate-500 font-medium">---</p>
                 </div>
 
-                <!-- Tapis Permainan Untuk Pensyarah -->
-                <div class="flex items-center gap-3">
-                    <label class="text-xs font-bold text-slate-600">Tapis Permainan:</label>
-                    <select id="filterLecGame" onchange="renderLecturerStudentTable()" class="px-4 py-2 text-xs font-bold clay-input text-slate-800">
-                        <option value="ALL">-- Semua Permainan --</option>
-                        <option value="Bola Sepak">Bola Sepak</option>
-                        <option value="Bola Baling">Bola Baling</option>
-                        <option value="Hoki">Hoki</option>
-                        <option value="Badminton">Badminton</option>
-                        <option value="Bola Tampar">Bola Tampar</option>
-                        <option value="Sepak Takraw">Sepak Takraw</option>
-                        <option value="Ragbi Sentuh">Ragbi Sentuh</option>
-                        <option value="Futsal">Futsal</option>
-                        <option value="Bola Jaring">Bola Jaring</option>
-                        <option value="Bola Keranjang">Bola Keranjang</option>
-                    </select>
+                <!-- Tapis Skop Pelajar & Permainan -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Skop Pelajar</label>
+                        <select id="filterLecScope" onchange="renderLecturerStudentTable()" class="px-3 py-2 text-xs font-bold clay-input text-slate-800">
+                            <option value="MY_STUDENTS">Pelajar Seliaan Saya Sahaja</option>
+                            <option value="ALL_STUDENTS">Semua Pelajar (Semua Pensyarah)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Permainan</label>
+                        <select id="filterLecGame" onchange="renderLecturerStudentTable()" class="px-3 py-2 text-xs font-bold clay-input text-slate-800">
+                            <option value="ALL">-- Semua Permainan --</option>
+                            <option value="Bola Sepak">Bola Sepak</option>
+                            <option value="Bola Baling">Bola Baling</option>
+                            <option value="Hoki">Hoki</option>
+                            <option value="Badminton">Badminton</option>
+                            <option value="Bola Tampar">Bola Tampar</option>
+                            <option value="Sepak Takraw">Sepak Takraw</option>
+                            <option value="Ragbi Sentuh">Ragbi Sentuh</option>
+                            <option value="Futsal">Futsal</option>
+                            <option value="Bola Jaring">Bola Jaring</option>
+                            <option value="Bola Keranjang">Bola Keranjang</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -301,7 +311,10 @@
             <!-- TAB 1: JADUAL PEMARKAHAN INDUK -->
             <div id="lecTabMarks" class="clay-card p-6 overflow-hidden">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-slate-800 text-base">Senarai Pelajar Untuk Dinilai</h3>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">Senarai Pelajar Untuk Dinilai</h3>
+                        <p id="scopeDescription" class="text-[11px] text-teal-700 font-medium">Menampilkan pelajar yang memilih anda sebagai Penilai.</p>
+                    </div>
                     <div class="text-xs text-slate-500">
                         Jumlah: <span id="studentCount" class="font-bold text-slate-800">0</span> Pelajar
                     </div>
@@ -313,6 +326,7 @@
                             <tr class="border-b-2 border-slate-300 text-slate-600 uppercase font-bold">
                                 <th class="py-3 px-2">Pelajar</th>
                                 <th class="py-3 px-2">Kelas / Permainan</th>
+                                <th class="py-3 px-2">Penilai Dipilih</th>
                                 <th class="py-3 px-2 text-center">HPP3 (60%)</th>
                                 <th class="py-3 px-2 text-center">HPP2 (20%)</th>
                                 <th class="py-3 px-2 text-center">HPP5 (20%)</th>
@@ -380,7 +394,7 @@
     <div id="modalApi" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="clay-card p-6 max-w-lg w-full bg-slate-100">
             <h3 class="font-bold text-slate-800 text-lg mb-2">Tetapan Web App URL Backend</h3>
-            <p class="text-xs text-slate-500 mb-4">Masukkan URL Google Apps Script Web App yang telah di-deploy (Execute as: Me, Access: Anyone).</p>
+            <p class="text-xs text-slate-500 mb-4">Tetapan ini adalah untuk Pentadbir Portal. Pengguna/Pelajar tidak perlu mengubah tetapan ini.</p>
             <input type="text" id="inputScriptUrl" placeholder="https://script.google.com/macros/s/.../exec"
                 class="w-full px-4 py-3 text-xs clay-input font-mono mb-4">
             <div class="flex justify-end space-x-2">
@@ -392,7 +406,7 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // BACKEND URL STORAGE
+        // BACKEND URL STORAGE - Gantikan DEFAULT_SCRIPT_URL dengan Web App URL anda
         const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbww2tvGdHQhvbYNbUY_zFocM9YiNpPez93iuHY4JpZ2yrh4tZRVSEzdY35tGnJJhPaP-Q/exec";
         let SCRIPT_URL = localStorage.getItem("MPU3421_SCRIPT_URL") || DEFAULT_SCRIPT_URL;
 
@@ -615,20 +629,53 @@
             }
         }
 
+        // PERBANDINGAN NAMA PENSYARAH FLEXIBLE (Sama ada nama Penuh atau Separa)
+        function isMatchingLecturer(studentPenilai, lecturerName) {
+            if (!studentPenilai || !lecturerName) return false;
+            const normStud = studentPenilai.toLowerCase().trim();
+            const normLec = lecturerName.toLowerCase().trim();
+            
+            return normStud === normLec || normStud.includes(normLec) || normLec.includes(normStud);
+        }
+
         // RENDER LECTURER TABLE
         function renderLecturerStudentTable() {
+            const filterScope = document.getElementById("filterLecScope").value;
             const filterGame = document.getElementById("filterLecGame").value;
             const tbody = document.getElementById("tableStudentMarksBody");
+            const scopeDesc = document.getElementById("scopeDescription");
             tbody.innerHTML = "";
 
             let filtered = allStudents;
+
+            // 1. Tapis Mengikut Skop Pensyarah
+            if (filterScope === "MY_STUDENTS" && currentUser) {
+                filtered = filtered.filter(s => isMatchingLecturer(s.penilai, currentUser.name));
+                scopeDesc.innerText = "Menampilkan pelajar yang memilih " + currentUser.name + " sebagai Penilai.";
+            } else {
+                scopeDesc.innerText = "Menampilkan SEMUA pelajar di bawah pelbagai pensyarah penilai.";
+            }
+
+            // 2. Tapis Mengikut Permainan
             if (filterGame !== "ALL") {
-                filtered = allStudents.filter(s => s.game === filterGame);
+                filtered = filtered.filter(s => s.game === filterGame);
             }
 
             document.getElementById("studentCount").innerText = filtered.length;
 
-            filtered.forEach((stud, idx) => {
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="py-8 text-center text-slate-400 italic">
+                            Tiada rekod pelajar ditemui mengikut tapisan semasa.
+                        </td>
+                    </tr>
+                `;
+                updateAnalyticsAndModeration([]);
+                return;
+            }
+
+            filtered.forEach((stud) => {
                 const tr = document.createElement("tr");
                 tr.className = "hover:bg-slate-200/50 transition-all";
 
@@ -640,6 +687,11 @@
                     <td class="py-3 px-2">
                         <div class="font-medium text-slate-700">${stud.kelas || '-'}</div>
                         <span class="inline-block px-2 py-0.5 text-[10px] rounded-full bg-slate-200 text-slate-600 font-bold">${stud.game || 'Belum Pilih'}</span>
+                    </td>
+                    <td class="py-3 px-2">
+                        <span class="px-2 py-1 text-[11px] rounded-md ${isMatchingLecturer(stud.penilai, currentUser?.name) ? 'bg-teal-50 text-teal-700 border border-teal-200 font-bold' : 'bg-slate-100 text-slate-600'}">
+                            ${stud.penilai || 'Belum Pilih'}
+                        </span>
                     </td>
                     <td class="py-3 px-2 text-center">
                         <input type="number" step="0.1" min="0" max="60" id="hpp3_${stud.ic}" value="${stud.hpp3 || 0}"
@@ -674,7 +726,7 @@
                 tbody.appendChild(tr);
             });
 
-            updateAnalyticsAndModeration();
+            updateAnalyticsAndModeration(filtered);
         }
 
         // SAVE INDIVIDUAL MARK BY LECTURER
@@ -721,7 +773,7 @@
                     document.getElementById(`grade_${ic}`).innerText = res.data.grade;
 
                     showToast(`Markah ${stud.name} berjaya disimpan!`, "success");
-                    updateAnalyticsAndModeration();
+                    renderLecturerStudentTable();
                 } else {
                     showToast(res.message || "Gagal menyimpan markah.", "error");
                 }
@@ -753,15 +805,16 @@
         }
 
         // ANALYTICS & MODERATION GENERATOR
-        function updateAnalyticsAndModeration() {
-            if (!allStudents.length) return;
+        function updateAnalyticsAndModeration(studentsList) {
+            const dataset = studentsList && studentsList.length > 0 ? studentsList : allStudents;
+            if (!dataset.length) return;
 
             // Grade counts
             const gradeMap = { 'A+': 0, 'A': 0, 'A-': 0, 'B+': 0, 'B': 0, 'B-': 0, 'C+': 0, 'C': 0, 'Lain-lain': 0 };
             let passCount = 0;
             let failCount = 0;
 
-            allStudents.forEach(s => {
+            dataset.forEach(s => {
                 if (s.grade in gradeMap) {
                     gradeMap[s.grade]++;
                 } else if (s.grade && s.grade !== "Belum Dinilai") {
@@ -792,12 +845,12 @@
             // Render Pass Donut Chart
             const ctx2 = document.getElementById("chartPassStatus").getContext("2d");
             if (chartPassObj) chartPassObj.destroy();
-            chartPassObj = new Chart(ctx2, {
+            chartPassObj = new Chart(chartPassObj ? ctx2 : ctx2, {
                 type: 'doughnut',
                 data: {
                     labels: ['Lulus', 'Gagal', 'Belum Dinilai'],
                     datasets: [{
-                        data: [passCount, failCount, allStudents.length - (passCount + failCount)],
+                        data: [passCount, failCount, dataset.length - (passCount + failCount)],
                         backgroundColor: ['#10b981', '#ef4444', '#cbd5e1']
                     }]
                 },
@@ -805,7 +858,7 @@
             });
 
             // Moderation Samples
-            const sorted = [...allStudents].sort((a, b) => (b.total || 0) - (a.total || 0));
+            const sorted = [...dataset].sort((a, b) => (b.total || 0) - (a.total || 0));
             if (sorted.length > 0) {
                 const high = sorted[0];
                 const med = sorted[Math.floor(sorted.length / 2)];
