@@ -13,8 +13,8 @@
     
     <style>
         :root {
-            --primary: #0f766e;    
-            --primary-hover: #115e59;
+            --primary: #1d4ed8;    
+            --primary-hover: #1e40af;
             --secondary: #9f1239;  
             --bg-body: #eef2f6;    
             --bg-surface: #f6f8fa; 
@@ -45,7 +45,7 @@
         }
         .clay-input:focus {
             border-color: var(--primary);
-            box-shadow: inset 2px 2px 4px #cbd5e1, inset -2px -2px 4px #ffffff, 0 0 0 3px rgba(15, 118, 110, 0.2);
+            box-shadow: inset 2px 2px 4px #cbd5e1, inset -2px -2px 4px #ffffff, 0 0 0 3px rgba(29, 78, 216, 0.2);
         }
         .clay-input.invalid-val {
             border-color: #ef4444 !important;
@@ -54,7 +54,7 @@
         }
 
         .clay-btn {
-            background: linear-gradient(145deg, #0f766e, #115e59);
+            background: linear-gradient(145deg, #1d4ed8, #1e40af);
             color: white;
             border-radius: 0.8rem;
             box-shadow: 4px 4px 8px #cbd5e1, -4px -4px 8px #ffffff;
@@ -87,8 +87,8 @@
         .academic-table td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; }
 
         .dim-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px; display: block; }
-        .nav-btn { background:transparent; border:none; padding:10px 16px; font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; border-bottom:3px solid transparent; cursor:pointer; white-space:nowrap; }
-        .nav-btn.active { color:var(--primary); border-bottom-color:var(--primary); }
+        .nav-btn { background:transparent; border:none; padding:10px 18px; font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; border-bottom:3px solid transparent; cursor:pointer; white-space:nowrap; transition: all 0.2s; }
+        .nav-btn.active { color:var(--primary); border-bottom-color:var(--primary); font-weight: 800; }
     </style>
 </head>
 <body>
@@ -101,17 +101,17 @@
 <div class="min-h-screen flex items-center justify-center p-6" id="loginScreen">
     <div class="clay-card w-full p-8 sm:p-10" style="max-width:440px;">
         <div class="text-center mb-6">
-            <div class="w-16 h-16 mx-auto mb-3 flex items-center justify-center bg-teal-100 text-teal-800 rounded-2xl shadow-inner">
+            <div class="w-16 h-16 mx-auto mb-3 flex items-center justify-center bg-blue-100 text-blue-800 rounded-2xl shadow-inner">
                 <i class="fas fa-running text-3xl"></i>
             </div>
-            <div class="text-[10px] font-extrabold tracking-widest text-teal-800 uppercase mb-1">IPG KAMPUS DARULAMAN</div>
+            <div class="text-[10px] font-extrabold tracking-widest text-blue-800 uppercase mb-1">IPG KAMPUS DARULAMAN</div>
             <h1 class="font-serif-title text-2xl font-bold text-slate-800">MPU3421 PERMAINAN</h1>
             <p class="text-xs text-slate-500 font-medium mt-1">Portal Pemarkahan Pentaksiran Berterusan</p>
         </div>
 
         <div class="flex border-b mb-6">
-            <button class="flex-1 py-2 text-xs font-bold text-teal-800 border-b-2 border-teal-800" id="btnRoleStudent" onclick="switchLoginRole('student')"><i class="fas fa-user-graduate me-1"></i> Pelajar</button>
-            <button class="flex-1 py-2 text-xs font-bold text-slate-400 border-b-2 border-transparent" id="btnRoleLec" onclick="switchLoginRole('lecturer')"><i class="fas fa-user-shield me-1"></i> Pensyarah</button>
+            <button class="flex-1 py-2 text-xs font-bold text-blue-800 border-b-2 border-blue-800" id="btnRoleStudent" onclick="switchLoginRole('student')"><i class="fas fa-user-graduate me-1"></i> Pelajar</button>
+            <button class="flex-1 py-2 text-xs font-bold text-slate-400 border-b-2 border-transparent" id="btnRoleLec" onclick="switchLoginRole('lecturer')"><i class="fas fa-user-shield me-1"></i> Pensyarah / Admin</button>
         </div>
 
         <div class="flex flex-col gap-4 mb-6">
@@ -133,13 +133,13 @@
 
 <!-- DASHBOARD PELAJAR -->
 <div id="studentDash" style="display:none;" class="min-h-screen flex-col">
-    <div class="bg-teal-800 text-white px-8 py-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
+    <div class="bg-blue-900 text-white px-8 py-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
         <div class="flex items-center gap-4">
-            <div class="w-10 h-10 bg-teal-700/50 rounded-xl flex items-center justify-center text-lg">
+            <div class="w-10 h-10 bg-blue-800/60 rounded-xl flex items-center justify-center text-lg">
                 <i class="fas fa-user-graduate"></i>
             </div>
             <div>
-                <div class="text-[10px] font-bold tracking-widest text-teal-200 uppercase">Ruang Pelajar MPU3421</div>
+                <div class="text-[10px] font-bold tracking-widest text-blue-200 uppercase">Ruang Pelajar MPU3421</div>
                 <div id="hdrStudentName" class="font-serif-title font-bold text-lg">--</div>
             </div>
         </div>
@@ -158,7 +158,7 @@
                 </div>
                 <div>
                     <label class="dim-label">No. Kad Pengenalan / Kumpulan</label>
-                    <div id="sK" class="font-mono-score text-xs font-bold text-teal-800">--</div>
+                    <div id="sK" class="font-mono-score text-xs font-bold text-blue-800">--</div>
                 </div>
                 <div>
                     <label class="dim-label">Permainan Didaftarkan</label>
@@ -191,21 +191,21 @@
     </div>
 </div>
 
-<!-- DASHBOARD PENSYARAH -->
+<!-- DASHBOARD PENSYARAH / ADMIN -->
 <div id="lecturerDash" style="display:none;" class="min-h-screen flex-col">
     <!-- Header -->
-    <div class="bg-teal-800 text-white px-8 py-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
+    <div class="bg-blue-900 text-white px-8 py-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
         <div class="flex items-center gap-4">
-            <div class="w-10 h-10 bg-teal-700/50 rounded-xl flex items-center justify-center text-lg">
+            <div class="w-10 h-10 bg-blue-800/60 rounded-xl flex items-center justify-center text-lg">
                 <i class="fas fa-user-shield"></i>
             </div>
             <div>
-                <div class="text-[10px] font-bold tracking-widest text-teal-200 uppercase">Pensyarah Penilai MPU3421</div>
+                <div class="text-[10px] font-bold tracking-widest text-blue-200 uppercase" id="lecRoleBadge">Pensyarah Penilai MPU3421</div>
                 <div id="lecName" class="font-serif-title font-bold text-lg">--</div>
             </div>
         </div>
         <div class="flex items-center gap-3">
-            <button onclick="initLec()" class="clay-btn-outline px-3 py-2 text-xs text-teal-800"><i class="fas fa-sync me-1"></i> Muat Semula Data</button>
+            <button onclick="initLec()" class="clay-btn-outline px-3 py-2 text-xs text-blue-800"><i class="fas fa-sync me-1"></i> Muat Semula Data</button>
             <button onclick="logout()" class="clay-btn-outline px-3 py-2 text-xs text-rose-700"><i class="fas fa-sign-out-alt me-1"></i> Keluar</button>
         </div>
     </div>
@@ -213,10 +213,11 @@
     <!-- Navigation Bar -->
     <div class="bg-white border-b border-slate-200 px-8 pt-3">
         <div class="flex gap-2 overflow-x-auto">
-            <button class="nav-btn active" id="btn-marking" onclick="showLecTab('marking')"><i class="fas fa-calculator me-1"></i> Pemarkahan Induk</button>
-            <button class="nav-btn" id="btn-laporan" onclick="showLecTab('laporan')"><i class="fas fa-chart-pie me-1"></i> Analisis Gred &amp; SP</button>
-            <button class="nav-btn text-purple-800 font-extrabold" id="btn-simulasi" onclick="showLecTab('simulasi')"><i class="fas fa-flask me-1"></i> Simulasi SP Canggih</button>
-            <button class="nav-btn text-amber-800" id="btn-moderasi" onclick="showLecTab('moderasi')"><i class="fas fa-balance-scale me-1"></i> Moderasi LAM-PT-04-02</button>
+            <button class="nav-btn active" id="btn-marking" onclick="showLecTab('marking')"><i class="fas fa-edit me-1 text-blue-700"></i> Pemarkahan Induk</button>
+            <button class="nav-btn" id="btn-laporan" onclick="showLecTab('laporan')"><i class="fas fa-chart-line me-1 text-blue-700"></i> Analisis Gred &amp; SP</button>
+            <!-- TAB HANYA UNTUK ADMIN -->
+            <button class="nav-btn" id="btn-simulasi" style="display:none;" onclick="showLecTab('simulasi')"><i class="fas fa-sliders me-1 text-blue-700"></i> Simulasi Sisihan Piawai (SP)</button>
+            <button class="nav-btn" id="btn-moderasi" style="display:none;" onclick="showLecTab('moderasi')"><i class="fas fa-balance-scale me-1 text-blue-700"></i> Moderasi LAM-PT-04-02</button>
         </div>
     </div>
 
@@ -225,13 +226,15 @@
         <div id="ltab-marking">
             <div class="clay-card p-6 mb-6">
                 <div class="flex justify-between items-center flex-wrap gap-4 mb-4">
-                    <h3 class="font-serif-title text-xl font-bold text-slate-800">Borang Pemarkahan Pentaksiran Berterusan (MPU3421)</h3>
+                    <h3 class="font-serif-title text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fas fa-edit text-blue-800"></i> Borang Pemarkahan Pentaksiran Berterusan (MPU3421)
+                    </h3>
                     <div class="flex items-center gap-3 flex-wrap">
                         <div>
                             <label class="dim-label">Skop Pelajar</label>
                             <select id="scopeFilter" onchange="filterStudents()" class="clay-input text-xs font-bold">
                                 <option value="mine">Pelajar Seliaan Saya Sahaja</option>
-                                <option value="all">Semua Pelajar (Semua Pensyarah)</option>
+                                <option value="all" id="optScopeAll">Semua Pelajar (Semua Pensyarah)</option>
                             </select>
                         </div>
                         <div>
@@ -278,12 +281,14 @@
             </div>
         </div>
 
-        <!-- TAB 2: ANALISIS GRED & STATISTIK SISIHAN PIAWAI (SP) REAL-TIME -->
+        <!-- TAB 2: ANALISIS GRED & STATISTIK SISIHAN PIAWAI (SP) -->
         <div id="ltab-laporan" style="display:none;">
             <div class="clay-card p-6 mb-6">
                 <div class="flex justify-between items-center flex-wrap gap-4 border-b pb-4 mb-6">
                     <div>
-                        <h3 class="font-serif-title text-xl font-bold text-slate-800">Analisis Taburan Gred &amp; Sisihan Piawai (SP) Real-Time</h3>
+                        <h3 class="font-serif-title text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fas fa-chart-line text-blue-800"></i> Analisis Taburan Gred &amp; Sisihan Piawai (SP)
+                        </h3>
                         <p class="text-xs text-slate-500 mt-1">Dikira secara langsung berdasarkan markah terkumpul pelajar dalam pangkalan data.</p>
                     </div>
                     <div class="flex items-center gap-3 flex-wrap">
@@ -299,11 +304,10 @@
                                 <option value="">Semua Kelas</option>
                             </select>
                         </div>
-                        <button onclick="loadGradeSummary()" class="clay-btn-outline px-3 py-2 text-xs text-teal-800 mt-3"><i class="fas fa-sync me-1"></i> Segar Semula Stats</button>
+                        <button onclick="loadGradeSummary()" class="clay-btn-outline px-3 py-2 text-xs text-blue-800 mt-3"><i class="fas fa-sync me-1"></i> Segar Semula Stats</button>
                     </div>
                 </div>
 
-                <!-- 4 KAD STATISTIK MASA NYATA -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     <div class="clay-card p-4 text-center">
                         <div class="dim-label mb-1">JUMLAH CALON DINILAI</div>
@@ -312,7 +316,7 @@
                     </div>
                     <div class="clay-card p-4 text-center">
                         <div class="dim-label mb-1">PURATA MARKAH (MEAN)</div>
-                        <div id="gradeMeanVal" class="font-mono-score text-3xl font-extrabold text-teal-700">--</div>
+                        <div id="gradeMeanVal" class="font-mono-score text-3xl font-extrabold text-blue-700">--</div>
                         <div class="text-[10px] text-slate-400 font-bold mt-1">Skala Maksimum 100%</div>
                     </div>
                     <div class="clay-card p-4 text-center">
@@ -327,7 +331,6 @@
                     </div>
                 </div>
 
-                <!-- JADUAL BAND & CARTA BAR -->
                 <div class="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 items-start">
                     <div class="clay-card p-4 overflow-hidden">
                         <table class="academic-table text-center">
@@ -337,7 +340,7 @@
                     </div>
                     <div class="clay-card p-5">
                         <div class="text-xs font-bold text-slate-700 mb-3 flex justify-between items-center border-b pb-2">
-                            <span><i class="fas fa-chart-bar me-1 text-teal-700"></i> Graf Taburan Gred Calon</span>
+                            <span><i class="fas fa-chart-bar me-1 text-blue-700"></i> Graf Taburan Gred Calon</span>
                             <span class="text-[10px] text-slate-400">Interactive Bar Graph</span>
                         </div>
                         <div class="h-64 relative">
@@ -348,12 +351,14 @@
             </div>
         </div>
 
-        <!-- TAB 3: SIMULASI SISIHAN PIAWAI (SP) CANGGIH -->
+        <!-- TAB 3: SIMULASI SISIHAN PIAWAI (HANYA DILIHAT OLEH ADMIN) -->
         <div id="ltab-simulasi" style="display:none;">
             <div class="clay-card p-6">
                 <div class="flex justify-between items-center mb-4 border-b pb-3">
                     <div>
-                        <h3 class="font-serif-title text-xl font-bold text-slate-800">Simulasi Sisihan Piawai (SP) Canggih</h3>
+                        <h3 class="font-serif-title text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fas fa-sliders text-blue-800"></i> Simulasi Sisihan Piawai (SP) - [AKSES ADMIN]
+                        </h3>
                         <p class="text-xs text-slate-500 mt-1">Pilih permainan atau kelas tertentu untuk membuat simulasi sasaran SP terlaras.</p>
                     </div>
                 </div>
@@ -381,7 +386,7 @@
                         </select>
                     </div>
                     <div class="flex items-end">
-                        <button onclick="runSPSimulation()" class="clay-btn w-full py-2.5 text-xs bg-purple-800">
+                        <button onclick="runSPSimulation()" class="clay-btn w-full py-2.5 text-xs">
                             <i class="fas fa-play me-1"></i> Jalankan Simulasi
                         </button>
                     </div>
@@ -389,8 +394,8 @@
 
                 <div id="simStatsSummary" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div class="clay-card p-4 text-center">
-                        <div class="text-[10px] font-bold text-teal-800 uppercase">SP Asal</div>
-                        <div id="simSPBefore" class="font-mono-score text-2xl font-bold text-teal-900">0.0</div>
+                        <div class="text-[10px] font-bold text-blue-800 uppercase">SP Asal</div>
+                        <div id="simSPBefore" class="font-mono-score text-2xl font-bold text-blue-900">0.0</div>
                     </div>
                     <div class="clay-card p-4 text-center">
                         <div class="text-[10px] font-bold text-purple-800 uppercase">SP Hasil Simulasi</div>
@@ -432,10 +437,12 @@
             </div>
         </div>
 
-        <!-- TAB 4: MODERASI LAM-PT-04-02 -->
+        <!-- TAB 4: MODERASI LAM-PT-04-02 (HANYA DILIHAT OLEH ADMIN) -->
         <div id="ltab-moderasi" style="display:none;">
             <div class="clay-card p-6">
-                <h3 class="font-serif-title text-xl font-bold text-slate-800 mb-2">Modul Moderasi LAM-PT-04-02 (MPU3421)</h3>
+                <h3 class="font-serif-title text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+                    <i class="fas fa-balance-scale text-blue-800"></i> Modul Moderasi LAM-PT-04-02 (MPU3421) - [AKSES ADMIN]
+                </h3>
                 <p class="text-xs text-slate-500 mb-4">Sampel 13 skrip terlaras bagi penyelarasan moderasi pensyarah penilai.</p>
                 <button onclick="loadModeration()" class="clay-btn-outline px-3 py-1.5 mb-4 text-xs"><i class="fas fa-sync me-1"></i> Segarkan Sampel Moderasi</button>
                 <div class="overflow-x-auto border rounded-xl bg-white">
@@ -456,6 +463,7 @@ let API = DEFAULT_SCRIPT_URL;
 let curLec = "", curLecName = "";
 let curUser = null;
 let currentRole = "student";
+let isAdmin = false;
 let sData = [];
 let chartInstance = null;
 let lastSimulationData = [];
@@ -463,7 +471,7 @@ let lastSimulationData = [];
 function showToast(msg, type='success') {
     const t = document.getElementById('toast'), m = document.getElementById('toastMsg');
     if (!t || !m) return;
-    m.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle text-teal-600':'fa-exclamation-triangle text-amber-600'} me-2"></i> <span>${msg}</span>`;
+    m.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle text-blue-600':'fa-exclamation-triangle text-amber-600'} me-2"></i> <span>${msg}</span>`;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
 }
@@ -511,9 +519,9 @@ function isMatchingLecturer(studentPensyarah, loggedInLecturerName, loggedInLect
 
 function switchLoginRole(role) {
     currentRole = role;
-    document.getElementById('btnRoleStudent').className = role === 'student' ? 'flex-1 py-2 text-xs font-bold text-teal-800 border-b-2 border-teal-800' : 'flex-1 py-2 text-xs font-bold text-slate-400 border-b-2 border-transparent';
-    document.getElementById('btnRoleLec').className = role === 'lecturer' ? 'flex-1 py-2 text-xs font-bold text-teal-800 border-b-2 border-teal-800' : 'flex-1 py-2 text-xs font-bold text-slate-400 border-b-2 border-transparent';
-    document.getElementById('lblId').innerText = role === 'student' ? 'No. Kad Pengenalan (KP)' : 'Emel Rasmi Pensyarah';
+    document.getElementById('btnRoleStudent').className = role === 'student' ? 'flex-1 py-2 text-xs font-bold text-blue-800 border-b-2 border-blue-800' : 'flex-1 py-2 text-xs font-bold text-slate-400 border-b-2 border-transparent';
+    document.getElementById('btnRoleLec').className = role === 'lecturer' ? 'flex-1 py-2 text-xs font-bold text-blue-800 border-b-2 border-blue-800' : 'flex-1 py-2 text-xs font-bold text-slate-400 border-b-2 border-transparent';
+    document.getElementById('lblId').innerText = role === 'student' ? 'No. Kad Pengenalan (KP)' : 'Emel Rasmi Pensyarah / Admin';
     document.getElementById('idIn').placeholder = role === 'student' ? 'Contoh: 031025021234' : 'nama@ipgm.edu.my';
     document.getElementById('pwBox').style.display = role === 'lecturer' ? 'block' : 'none';
 }
@@ -542,9 +550,14 @@ async function handleAuth() {
             const r = await fetch(`${API}?action=lecturerLogin&email=${encodeURIComponent(id)}&pass=${encodeURIComponent(pw)}`);
             const o = await r.json();
             if (o.status === 'success') {
-                curLec = id;
+                curLec = id.toLowerCase();
                 curLecName = o.name || curLec;
-                document.getElementById('lecName').innerText = curLecName;
+                isAdmin = (o.isAdmin === true) || (curLec === "hanifffaizal@gmail.com");
+
+                document.getElementById('lecName').innerText = curLecName + (isAdmin ? " (Admin)" : "");
+                document.getElementById('lecRoleBadge').innerText = isAdmin ? "PENTADBIR SISTEM (ADMIN)" : "PENSYARAH PENILAI MPU3421";
+
+                applyAccessControlUI();
                 await initLec();
             } else { showToast(o.message || 'Log masuk pensyarah gagal.', 'warn'); }
         } catch(e) { showToast('Ralat sambungan pelayan.', 'warn'); }
@@ -552,6 +565,31 @@ async function handleAuth() {
 
     btn.disabled = false;
     btn.innerHTML = `<i class="fas fa-sign-in-alt me-2"></i> Log Masuk Portal`;
+}
+
+function applyAccessControlUI() {
+    const btnSim = document.getElementById('btn-simulasi');
+    const btnMod = document.getElementById('btn-moderasi');
+    const scopeSel = document.getElementById('scopeFilter');
+    const optAll = document.getElementById('optScopeAll');
+
+    if (isAdmin) {
+        if (btnSim) btnSim.style.display = 'inline-block';
+        if (btnMod) btnMod.style.display = 'inline-block';
+        if (scopeSel) {
+            scopeSel.disabled = false;
+            scopeSel.value = 'all'; // Admin lihat semua secara lalai
+        }
+        if (optAll) optAll.style.display = 'block';
+    } else {
+        if (btnSim) btnSim.style.display = 'none';
+        if (btnMod) btnMod.style.display = 'none';
+        if (scopeSel) {
+            scopeSel.value = 'mine'; // Dikunci kepada pelajar seliaan sahaja
+            scopeSel.disabled = true;
+        }
+        if (optAll) optAll.style.display = 'none';
+    }
 }
 
 async function renderStudentUI(d) {
@@ -651,7 +689,8 @@ function filterStudents() {
     if (!tbody) return;
 
     const filtered = sData.filter(s => {
-        const matchScope = scope === 'all' || isMatchingLecturer(s.Pensyarah, curLecName, curLec);
+        // PENSYARAH BIASA HANYA NAMPAK PELAJAR SELIAAN SENDIRI (KECUALI ADMIN)
+        const matchScope = isAdmin ? (scope === 'all' || isMatchingLecturer(s.Pensyarah, curLecName, curLec)) : isMatchingLecturer(s.Pensyarah, curLecName, curLec);
         const matchClass = !selectedClass || s.Kelas.trim() === selectedClass;
         
         const g = getSafePermainan(s);
@@ -682,7 +721,7 @@ function filterStudents() {
                     <div class="font-bold text-slate-800 text-xs">${s.Nama_Pelajar}</div>
                     <div class="font-mono-score text-[10px] text-slate-500">${s.No_KP}</div>
                 </td>
-                <td><span class="font-bold text-teal-800 text-xs">${s.Kelas} - ${permText}</span></td>
+                <td><span class="font-bold text-blue-800 text-xs">${s.Kelas} - ${permText}</span></td>
                 <td class="text-xs font-bold text-slate-700">${s.Pensyarah || '-'}</td>
                 <td>
                     <input type="number" id="h3_${s.No_KP}" value="${h3}" min="0" max="60" step="0.5"
@@ -696,9 +735,9 @@ function filterStudents() {
                     <input type="number" id="h5_${s.No_KP}" value="${h5}" min="0" max="20" step="0.5"
                         oninput="validateAndCalc('${s.No_KP}')" class="clay-input w-16 text-center font-mono-score font-bold text-xs">
                 </td>
-                <td class="font-mono-score font-bold text-sm text-teal-900" id="tot_${s.No_KP}">${tot.toFixed(1)}%</td>
+                <td class="font-mono-score font-bold text-sm text-blue-900" id="tot_${s.No_KP}">${tot.toFixed(1)}%</td>
                 <td>
-                    <span id="gred_${s.No_KP}" class="px-2 py-1 rounded text-xs font-serif-title font-bold ${tot >= 50 ? 'bg-teal-100 text-teal-800' : 'bg-rose-100 text-rose-800'}">
+                    <span id="gred_${s.No_KP}" class="px-2 py-1 rounded text-xs font-serif-title font-bold ${tot >= 50 ? 'bg-blue-100 text-blue-800' : 'bg-rose-100 text-rose-800'}">
                         ${gred}
                     </span>
                 </td>
@@ -741,8 +780,8 @@ function validateAndCalc(kp) {
     } else {
         const gred = calcGredMPU3421(tot);
         gredEl.innerText = gred;
-        gredEl.className = `px-2 py-1 rounded text-xs font-serif-title font-bold ${tot >= 50 ? 'bg-teal-100 text-teal-800' : 'bg-rose-100 text-rose-800'}`;
-        totEl.className = "font-mono-score font-bold text-sm text-teal-900";
+        gredEl.className = `px-2 py-1 rounded text-xs font-serif-title font-bold ${tot >= 50 ? 'bg-blue-100 text-blue-800' : 'bg-rose-100 text-rose-800'}`;
+        totEl.className = "font-mono-score font-bold text-sm text-blue-900";
     }
 }
 
@@ -801,6 +840,12 @@ async function saveMarkUI(kp) {
 }
 
 function showLecTab(tab) {
+    // SEKATAN TAMBAHAN DI FRONTEND UNTUK TERMASUK TAB ADMIN
+    if ((tab === 'simulasi' || tab === 'moderasi') && !isAdmin) {
+        showToast('Akses Ditolak: Modul ini hanya untuk Admin.', 'warn');
+        return;
+    }
+
     ['marking','laporan','simulasi','moderasi'].forEach(t => {
         const el = document.getElementById('ltab-' + t);
         if (el) el.style.display = 'none';
@@ -856,7 +901,7 @@ async function loadGradeSummary() {
         document.getElementById('gradeSummaryBody').innerHTML = bands.map(b => `
             <tr>
                 <td class="p-2 text-center font-mono-score text-xs">${b.skala}</td>
-                <td class="p-2 text-center font-bold text-teal-800">${b.gred}</td>
+                <td class="p-2 text-center font-bold text-blue-800">${b.gred}</td>
                 <td class="p-2 text-center font-mono-score font-bold">${b.jumlah}</td>
                 <td class="p-2 text-center font-mono-score">${b.peratus}%</td>
             </tr>
@@ -868,7 +913,7 @@ async function loadGradeSummary() {
             type: 'bar',
             data: {
                 labels: bands.map(b => b.gred),
-                datasets: [{ label: 'Jumlah Pelajar', data: bands.map(b => b.jumlah), backgroundColor: '#0f766e', borderRadius: 6 }]
+                datasets: [{ label: 'Jumlah Pelajar', data: bands.map(b => b.jumlah), backgroundColor: '#1d4ed8', borderRadius: 6 }]
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
         });
@@ -876,6 +921,8 @@ async function loadGradeSummary() {
 }
 
 function runSPSimulation() {
+    if (!isAdmin) return showToast('Modul ini terhad kepada Admin sahaja.', 'warn');
+
     const maxDelta = parseFloat(document.getElementById('simMaxDelta').value) || 3.0;
     const mode = document.getElementById('simGradeMode').value;
     const selectedGame = document.getElementById('simGameFilter').value;
@@ -953,14 +1000,14 @@ function runSPSimulation() {
         <tr class="${r.origGred !== r.newGred ? 'bg-amber-50' : ''}">
             <td>${i+1}</td>
             <td class="text-left font-bold text-xs">${r.nama}</td>
-            <td><span class="font-bold text-teal-800 text-xs">${r.kelas} - ${r.permainan}</span></td>
+            <td><span class="font-bold text-blue-800 text-xs">${r.kelas} - ${r.permainan}</span></td>
             <td class="font-mono-score font-bold">${r.origScore}%</td>
             <td class="font-mono-score font-bold text-purple-700">${r.targetScore}%</td>
-            <td class="font-mono-score text-xs ${r.delta >= 0 ? 'text-teal-700' : 'text-rose-600'}">${r.delta >= 0 ? '+'+r.delta : r.delta}</td>
+            <td class="font-mono-score text-xs ${r.delta >= 0 ? 'text-blue-700' : 'text-rose-600'}">${r.delta >= 0 ? '+'+r.delta : r.delta}</td>
             <td class="font-serif-title font-bold">${r.origGred}</td>
             <td class="font-serif-title font-bold text-purple-800">${r.newGred}</td>
             <td>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.origGred === r.newGred ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800'}">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.origGred === r.newGred ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'}">
                     ${r.gredStatus}
                 </span>
             </td>
@@ -971,6 +1018,7 @@ function runSPSimulation() {
 }
 
 async function applySimulationToSheet() {
+    if (!isAdmin) return showToast('Akses ditolak.', 'warn');
     if (!lastSimulationData.length) return;
 
     const btn = document.getElementById('btnApplySim');
@@ -999,6 +1047,7 @@ async function applySimulationToSheet() {
 }
 
 async function loadModeration() {
+    if (!isAdmin) return;
     const selectedClass = document.getElementById('reportClassFilter') ? document.getElementById('reportClassFilter').value : "";
     const selectedGame = document.getElementById('reportGameFilter') ? document.getElementById('reportGameFilter').value : "";
 
@@ -1011,8 +1060,8 @@ async function loadModeration() {
             <tr>
                 <td class="font-mono-score">${i+1}</td>
                 <td class="font-bold text-left">${s.nama}</td>
-                <td><span class="font-bold text-teal-800">${s.kelas} - ${s.permainaan || s.permainan || 'Belum Pilih'}</span></td>
-                <td class="font-mono-score font-bold text-teal-700">${s.markah.toFixed(1)}%</td>
+                <td><span class="font-bold text-blue-800">${s.kelas} - ${s.permainaan || s.permainan || 'Belum Pilih'}</span></td>
+                <td class="font-mono-score font-bold text-blue-700">${s.markah.toFixed(1)}%</td>
                 <td class="font-serif-title font-bold">${s.gred}</td>
                 <td class="text-xs font-bold text-slate-700">${s.pensyarah || '-'}</td>
             </tr>
