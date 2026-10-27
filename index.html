@@ -259,7 +259,7 @@
         <!-- VIEW 3: DASHBOARD PENSYARAH                -->
         <!-- ========================================== -->
         <section id="viewLecturerDashboard" class="hidden space-y-6">
-            <!-- Header Pensyarah -->
+            <!-- Header Pensyarah & Tapis Utama -->
             <div class="clay-card p-6 flex flex-wrap justify-between items-center gap-4">
                 <div>
                     <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-xs font-extrabold rounded-full clay-badge">PENSYARAH PENILAI</span>
@@ -267,13 +267,19 @@
                     <p id="lecRoleDisplay" class="text-xs text-slate-500 font-medium">---</p>
                 </div>
 
-                <!-- Tapis Skop Pelajar & Permainan -->
+                <!-- Tapis Skop Pelajar, Kelas & Permainan -->
                 <div class="flex flex-wrap items-center gap-3">
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Skop Pelajar</label>
                         <select id="filterLecScope" onchange="renderLecturerStudentTable()" class="px-3 py-2 text-xs font-bold clay-input text-slate-800">
                             <option value="MY_STUDENTS">Pelajar Seliaan Saya Sahaja</option>
                             <option value="ALL_STUDENTS">Semua Pelajar (Semua Pensyarah)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Kelas</label>
+                        <select id="filterLecClass" onchange="renderLecturerStudentTable()" class="px-3 py-2 text-xs font-bold clay-input text-slate-800">
+                            <option value="ALL">-- Semua Kelas --</option>
                         </select>
                     </div>
                     <div>
@@ -313,7 +319,7 @@
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <h3 class="font-bold text-slate-800 text-base">Senarai Pelajar Untuk Dinilai</h3>
-                        <p id="scopeDescription" class="text-[11px] text-teal-700 font-medium">Menampilkan pelajar yang memilih anda sebagai Penilai.</p>
+                        <p id="scopeDescription" class="text-[11px] text-teal-700 font-medium">Menampilkan pelajar mengikut susunan rasmi Data Pelajar.</p>
                     </div>
                     <div class="text-xs text-slate-500">
                         Jumlah: <span id="studentCount" class="font-bold text-slate-800">0</span> Pelajar
@@ -324,6 +330,7 @@
                     <table class="w-full text-left text-xs">
                         <thead>
                             <tr class="border-b-2 border-slate-300 text-slate-600 uppercase font-bold">
+                                <th class="py-3 px-2 text-center w-8">#</th>
                                 <th class="py-3 px-2">Pelajar</th>
                                 <th class="py-3 px-2">Kelas / Permainan</th>
                                 <th class="py-3 px-2">Penilai Dipilih</th>
@@ -344,21 +351,32 @@
             </div>
 
             <!-- TAB 2: ANALISIS & GRAF -->
-            <div id="lecTabAnalytics" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="clay-card p-6">
-                    <h3 class="font-bold text-slate-800 text-sm mb-4">Taburan Gred Pelajar</h3>
-                    <canvas id="chartGradeDistribution" height="220"></canvas>
+            <div id="lecTabAnalytics" class="hidden space-y-4">
+                <!-- Info Status Penapisan Graf -->
+                <div class="clay-card p-4 flex justify-between items-center text-xs">
+                    <div class="font-bold text-slate-700">
+                        <i class="fa-solid fa-filter text-teal-600 mr-1"></i> Skop Analisis Semasa: 
+                        <span id="analyticsFilterLabel" class="text-teal-700 underline font-semibold ml-1">Semua Pelajar</span>
+                    </div>
+                    <span class="text-[10px] text-slate-400">*Tukar penapis Kelas/Permainan di bahagian atas untuk melaras graf.</span>
                 </div>
-                <div class="clay-card p-6">
-                    <h3 class="font-bold text-slate-800 text-sm mb-4">Peratusan Kelulusan (Status)</h3>
-                    <canvas id="chartPassStatus" height="220"></canvas>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="clay-card p-6">
+                        <h3 class="font-bold text-slate-800 text-sm mb-4">Taburan Gred Pelajar</h3>
+                        <canvas id="chartGradeDistribution" height="220"></canvas>
+                    </div>
+                    <div class="clay-card p-6">
+                        <h3 class="font-bold text-slate-800 text-sm mb-4">Peratusan Kelulusan (Status)</h3>
+                        <canvas id="chartPassStatus" height="220"></canvas>
+                    </div>
                 </div>
             </div>
 
             <!-- TAB 3: SAMPEL MODERASI (LAM-PT-04-02) -->
             <div id="lecTabModeration" class="hidden clay-card p-6">
                 <h3 class="font-bold text-slate-800 text-base mb-2">Penjana Sampel Moderasi (LAM-PT-04-02)</h3>
-                <p class="text-xs text-slate-500 mb-6">Mengenalpasti sampel jawapan/markah Tinggi, Sederhana, dan Rendah secara automatik bagi tujuan pengesahan moderasi.</p>
+                <p class="text-xs text-slate-500 mb-6">Mengenalpasti sampel jawapan/markah Tinggi, Sederhana, dan Rendah secara automatik berdasarkan skop kelas/permainan yang dipilih.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- High Score Sample -->
@@ -406,12 +424,12 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // BACKEND URL STORAGE - Gantikan DEFAULT_SCRIPT_URL dengan Web App URL anda
+        // BACKEND URL STORAGE
         const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbww2tvGdHQhvbYNbUY_zFocM9YiNpPez93iuHY4JpZ2yrh4tZRVSEzdY35tGnJJhPaP-Q/exec";
         let SCRIPT_URL = localStorage.getItem("MPU3421_SCRIPT_URL") || DEFAULT_SCRIPT_URL;
 
         // STATE DATA
-        let currentRole = "pelajar"; // "pelajar" | "pensyarah"
+        let currentRole = "pelajar"; 
         let currentUser = null;
         let allStudents = [];
         let allLecturers = [];
@@ -472,6 +490,7 @@
                     allStudents = res.students || [];
                     allLecturers = res.lecturers || [];
                     populateLecturerDropdowns();
+                    populateClassDropdown();
                     hideToast();
                 } else {
                     showToast("Gagal memuatkan data: " + res.message, "error");
@@ -490,6 +509,20 @@
                 opt.value = lec.name;
                 opt.textContent = lec.name;
                 selectStudLec.appendChild(opt);
+            });
+        }
+
+        function populateClassDropdown() {
+            const filterLecClass = document.getElementById("filterLecClass");
+            filterLecClass.innerHTML = '<option value="ALL">-- Semua Kelas --</option>';
+            
+            // Ekstrak senarai unik kelas daripada data pelajar
+            const classes = [...new Set(allStudents.map(s => s.kelas).filter(Boolean))].sort();
+            classes.forEach(cls => {
+                const opt = document.createElement("option");
+                opt.value = cls;
+                opt.textContent = cls;
+                filterLecClass.appendChild(opt);
             });
         }
 
@@ -621,6 +654,12 @@
                     currentUser.game = selectedGame;
                     currentUser.penilai = selectedLec;
                     showToast("Pilihan permainan & pensyarah berjaya disimpan!", "success");
+                    // Refresh data tempatan
+                    const idx = allStudents.findIndex(s => s.ic === currentUser.ic);
+                    if (idx !== -1) {
+                        allStudents[idx].game = selectedGame;
+                        allStudents[idx].penilai = selectedLec;
+                    }
                 } else {
                     showToast(res.message || "Gagal menyimpan pilihan.", "error");
                 }
@@ -629,44 +668,57 @@
             }
         }
 
-        // PERBANDINGAN NAMA PENSYARAH FLEXIBLE (Sama ada nama Penuh atau Separa)
+        // PERBANDINGAN NAMA PENSYARAH FLEXIBLE
         function isMatchingLecturer(studentPenilai, lecturerName) {
             if (!studentPenilai || !lecturerName) return false;
             const normStud = studentPenilai.toLowerCase().trim();
             const normLec = lecturerName.toLowerCase().trim();
-            
             return normStud === normLec || normStud.includes(normLec) || normLec.includes(normStud);
         }
 
-        // RENDER LECTURER TABLE
+        // RENDER LECTURER TABLE & ANALYTICS
         function renderLecturerStudentTable() {
             const filterScope = document.getElementById("filterLecScope").value;
+            const filterClass = document.getElementById("filterLecClass").value;
             const filterGame = document.getElementById("filterLecGame").value;
+            
             const tbody = document.getElementById("tableStudentMarksBody");
             const scopeDesc = document.getElementById("scopeDescription");
             tbody.innerHTML = "";
 
-            let filtered = allStudents;
+            // Sentiasa kekalkan susunan asal mengikut kedudukan dalam `allStudents` (Data Pelajar)
+            let filtered = allStudents.map((stud, idx) => ({ ...stud, originalRowOrder: idx + 1 }));
 
             // 1. Tapis Mengikut Skop Pensyarah
             if (filterScope === "MY_STUDENTS" && currentUser) {
                 filtered = filtered.filter(s => isMatchingLecturer(s.penilai, currentUser.name));
-                scopeDesc.innerText = "Menampilkan pelajar yang memilih " + currentUser.name + " sebagai Penilai.";
+                scopeDesc.innerText = "Menampilkan pelajar seliaan " + currentUser.name + " (mengikut susunan rasmi Data Pelajar).";
             } else {
-                scopeDesc.innerText = "Menampilkan SEMUA pelajar di bawah pelbagai pensyarah penilai.";
+                scopeDesc.innerText = "Menampilkan SEMUA pelajar (mengikut susunan rasmi Data Pelajar).";
             }
 
-            // 2. Tapis Mengikut Permainan
+            // 2. Tapis Mengikut Kelas
+            if (filterClass !== "ALL") {
+                filtered = filtered.filter(s => s.kelas === filterClass);
+            }
+
+            // 3. Tapis Mengikut Permainan
             if (filterGame !== "ALL") {
                 filtered = filtered.filter(s => s.game === filterGame);
             }
 
             document.getElementById("studentCount").innerText = filtered.length;
 
+            // Kemaskini label skop pada tab Analisis
+            const scopeText = (filterScope === "MY_STUDENTS" ? `Seliaan ${currentUser?.name || ''}` : "Semua Pensyarah") +
+                              ` | Kelas: ${filterClass === 'ALL' ? 'Semua' : filterClass}` +
+                              ` | Permainan: ${filterGame === 'ALL' ? 'Semua' : filterGame}`;
+            document.getElementById("analyticsFilterLabel").innerText = scopeText;
+
             if (filtered.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="10" class="py-8 text-center text-slate-400 italic">
+                        <td colspan="11" class="py-8 text-center text-slate-400 italic">
                             Tiada rekod pelajar ditemui mengikut tapisan semasa.
                         </td>
                     </tr>
@@ -680,12 +732,15 @@
                 tr.className = "hover:bg-slate-200/50 transition-all";
 
                 tr.innerHTML = `
+                    <td class="py-3 px-2 text-center text-slate-400 font-mono text-[11px] font-bold">
+                        ${stud.originalRowOrder}
+                    </td>
                     <td class="py-3 px-2">
                         <div class="font-bold text-slate-800">${stud.name}</div>
                         <div class="text-[10px] text-slate-400 font-mono">KP: ${stud.ic}</div>
                     </td>
                     <td class="py-3 px-2">
-                        <div class="font-medium text-slate-700">${stud.kelas || '-'}</div>
+                        <div class="font-bold text-teal-700">${stud.kelas || '-'}</div>
                         <span class="inline-block px-2 py-0.5 text-[10px] rounded-full bg-slate-200 text-slate-600 font-bold">${stud.game || 'Belum Pilih'}</span>
                     </td>
                     <td class="py-3 px-2">
@@ -772,7 +827,7 @@
                     document.getElementById(`total_${ic}`).innerText = res.data.total.toFixed(1) + "%";
                     document.getElementById(`grade_${ic}`).innerText = res.data.grade;
 
-                    showToast(`Markah ${stud.name} berjaya disimpan!`, "success");
+                    showToast(`Markah ${stud.name} berjaya disimpan di baris rasminya!`, "success");
                     renderLecturerStudentTable();
                 } else {
                     showToast(res.message || "Gagal menyimpan markah.", "error");
@@ -806,8 +861,17 @@
 
         // ANALYTICS & MODERATION GENERATOR
         function updateAnalyticsAndModeration(studentsList) {
-            const dataset = studentsList && studentsList.length > 0 ? studentsList : allStudents;
-            if (!dataset.length) return;
+            const dataset = studentsList || [];
+
+            // Reset UI jika tiada data
+            if (!dataset.length) {
+                if (chartGradeObj) chartGradeObj.destroy();
+                if (chartPassObj) chartPassObj.destroy();
+                document.getElementById("modHighName").innerText = "Tiada Data";
+                document.getElementById("modMedName").innerText = "Tiada Data";
+                document.getElementById("modLowName").innerText = "Tiada Data";
+                return;
+            }
 
             // Grade counts
             const gradeMap = { 'A+': 0, 'A': 0, 'A-': 0, 'B+': 0, 'B': 0, 'B-': 0, 'C+': 0, 'C': 0, 'Lain-lain': 0 };
@@ -845,7 +909,7 @@
             // Render Pass Donut Chart
             const ctx2 = document.getElementById("chartPassStatus").getContext("2d");
             if (chartPassObj) chartPassObj.destroy();
-            chartPassObj = new Chart(chartPassObj ? ctx2 : ctx2, {
+            chartPassObj = new Chart(ctx2, {
                 type: 'doughnut',
                 data: {
                     labels: ['Lulus', 'Gagal', 'Belum Dinilai'],
