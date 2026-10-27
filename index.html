@@ -90,6 +90,13 @@
             box-shadow: 3px 3px 6px #d1d5db, -3px -3px 6px #ffffff;
         }
 
+        /* Input Invalid Style */
+        .input-error {
+            border: 2px solid #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #dc2626 !important;
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -141,7 +148,7 @@
     <main class="max-w-7xl mx-auto px-4 mt-4">
 
         <!-- NOTIFICATION BANNER -->
-        <div id="toast" class="hidden mb-4 p-4 rounded-2xl text-sm font-semibold flex items-center justify-between transition-all clay-card">
+        <div id="toast" class="hidden mb-4 p-4 rounded-2xl text-sm font-semibold flex items-center justify-between transition-all clay-card z-50">
             <span id="toastMsg">Mesej Notifikasi</span>
             <button onclick="hideToast()"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -316,10 +323,15 @@
 
             <!-- TAB 1: JADUAL PEMARKAHAN INDUK -->
             <div id="lecTabMarks" class="clay-card p-6 overflow-hidden">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                     <div>
                         <h3 class="font-bold text-slate-800 text-base">Senarai Pelajar Untuk Dinilai</h3>
                         <p id="scopeDescription" class="text-[11px] text-teal-700 font-medium">Menampilkan pelajar mengikut susunan rasmi Data Pelajar.</p>
+                    </div>
+                    <!-- Had Maksimum Info Badge -->
+                    <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-800 px-3 py-1.5 rounded-xl text-[11px] font-semibold">
+                        <i class="fa-solid fa-shield-halved text-amber-600"></i>
+                        <span>Had Maks: <strong>HPP3 ≤ 60%</strong> | <strong>HPP2 ≤ 20%</strong> | <strong>HPP5 ≤ 20%</strong></span>
                     </div>
                     <div class="text-xs text-slate-500">
                         Jumlah: <span id="studentCount" class="font-bold text-slate-800">0</span> Pelajar
@@ -344,7 +356,7 @@
                             </tr>
                         </thead>
                         <tbody id="tableStudentMarksBody" class="divide-y divide-slate-200">
-                            <!-- Rows dynamic generated -->
+                            <!-- Rows dynamically generated -->
                         </tbody>
                     </table>
                 </div>
@@ -352,7 +364,6 @@
 
             <!-- TAB 2: ANALISIS & GRAF -->
             <div id="lecTabAnalytics" class="hidden space-y-4">
-                <!-- Info Status Penapisan Graf -->
                 <div class="clay-card p-4 flex justify-between items-center text-xs">
                     <div class="font-bold text-slate-700">
                         <i class="fa-solid fa-filter text-teal-600 mr-1"></i> Skop Analisis Semasa: 
@@ -468,12 +479,12 @@
             const toastMsg = document.getElementById("toastMsg");
             toastMsg.innerText = msg;
             toast.className = `mb-4 p-4 rounded-2xl text-sm font-semibold flex items-center justify-between transition-all clay-card ${
-                type === 'error' ? 'bg-rose-100 text-rose-800 border border-rose-300' :
+                type === 'error' ? 'bg-rose-100 text-rose-800 border-2 border-rose-400' :
                 type === 'success' ? 'bg-teal-100 text-teal-800 border border-teal-300' :
                 'bg-slate-200 text-slate-800'
             }`;
             toast.classList.remove("hidden");
-            setTimeout(hideToast, 4000);
+            setTimeout(hideToast, 5000);
         }
         function hideToast() {
             document.getElementById("toast").classList.add("hidden");
@@ -516,7 +527,6 @@
             const filterLecClass = document.getElementById("filterLecClass");
             filterLecClass.innerHTML = '<option value="ALL">-- Semua Kelas --</option>';
             
-            // Ekstrak senarai unik kelas daripada data pelajar
             const classes = [...new Set(allStudents.map(s => s.kelas).filter(Boolean))].sort();
             classes.forEach(cls => {
                 const opt = document.createElement("option");
@@ -596,18 +606,15 @@
             document.getElementById("viewLecturerDashboard").classList.add("hidden");
             document.getElementById("viewStudentDashboard").classList.remove("hidden");
 
-            // Header Info
             document.getElementById("userInfoHeader").classList.remove("hidden");
             document.getElementById("userDisplayName").innerText = stud.name;
             document.getElementById("userDisplayRole").innerText = "Pelajar (" + stud.kelas + ")";
 
-            // Student Dashboard Card
             document.getElementById("studNameDisplay").innerText = stud.name;
             document.getElementById("studIcDisplay").innerText = stud.ic;
             document.getElementById("studNoGiliranDisplay").innerText = stud.noGiliran || "-";
             document.getElementById("studKelasDisplay").innerText = stud.kelas || "-";
 
-            // Form Selections
             document.getElementById("selectStudGame").value = stud.game || "";
             document.getElementById("selectStudLec").value = stud.penilai || "";
         }
@@ -617,7 +624,6 @@
             document.getElementById("viewStudentDashboard").classList.add("hidden");
             document.getElementById("viewLecturerDashboard").classList.remove("hidden");
 
-            // Header Info
             document.getElementById("userInfoHeader").classList.remove("hidden");
             document.getElementById("userDisplayName").innerText = lec.name;
             document.getElementById("userDisplayRole").innerText = lec.role;
@@ -654,7 +660,6 @@
                     currentUser.game = selectedGame;
                     currentUser.penilai = selectedLec;
                     showToast("Pilihan permainan & pensyarah berjaya disimpan!", "success");
-                    // Refresh data tempatan
                     const idx = allStudents.findIndex(s => s.ic === currentUser.ic);
                     if (idx !== -1) {
                         allStudents[idx].game = selectedGame;
@@ -676,6 +681,79 @@
             return normStud === normLec || normStud.includes(normLec) || normLec.includes(normStud);
         }
 
+        // GRED CALCULATOR (FRONTEND JS)
+        function calculateGradeJS(score) {
+            if (score >= 85) return { grade: 'A+', status: 'Lulus' };
+            if (score >= 80) return { grade: 'A',  status: 'Lulus' };
+            if (score >= 75) return { grade: 'A-', status: 'Lulus' };
+            if (score >= 70) return { grade: 'B+', status: 'Lulus' };
+            if (score >= 65) return { grade: 'B',  status: 'Lulus' };
+            if (score >= 60) return { grade: 'B-', status: 'Lulus' };
+            if (score >= 55) return { grade: 'C+', status: 'Lulus' };
+            if (score >= 50) return { grade: 'C',  status: 'Lulus' };
+            if (score >= 45) return { grade: 'C-', status: 'Gagal' };
+            if (score >= 40) return { grade: 'D+', status: 'Gagal' };
+            if (score >= 35) return { grade: 'D',  status: 'Gagal' };
+            return { grade: 'F', status: 'Gagal' };
+        }
+
+        // LIVE INPUT MARK VALIDATION
+        function onMarkInput(ic) {
+            const el3 = document.getElementById(`hpp3_${ic}`);
+            const el2 = document.getElementById(`hpp2_${ic}`);
+            const el5 = document.getElementById(`hpp5_${ic}`);
+            const totalEl = document.getElementById(`total_${ic}`);
+            const gradeEl = document.getElementById(`grade_${ic}`);
+
+            if (!el3 || !el2 || !el5) return;
+
+            const val3 = parseFloat(el3.value) || 0;
+            const val2 = parseFloat(el2.value) || 0;
+            const val5 = parseFloat(el5.value) || 0;
+
+            let isInvalid = false;
+
+            // Semak HPP3 (Max 60)
+            if (val3 < 0 || val3 > 60) {
+                el3.classList.add("input-error");
+                isInvalid = true;
+            } else {
+                el3.classList.remove("input-error");
+            }
+
+            // Semak HPP2 (Max 20)
+            if (val2 < 0 || val2 > 20) {
+                el2.classList.add("input-error");
+                isInvalid = true;
+            } else {
+                el2.classList.remove("input-error");
+            }
+
+            // Semak HPP5 (Max 20)
+            if (val5 < 0 || val5 > 20) {
+                el5.classList.add("input-error");
+                isInvalid = true;
+            } else {
+                el5.classList.remove("input-error");
+            }
+
+            const total = val3 + val2 + val5;
+            totalEl.innerText = total.toFixed(1) + "%";
+
+            if (isInvalid || total > 100) {
+                totalEl.classList.add("text-rose-600");
+                totalEl.classList.remove("text-teal-700");
+                gradeEl.innerText = "RALAT";
+                gradeEl.className = "px-2 py-1 font-bold text-xs rounded-lg bg-rose-100 text-rose-800 animate-pulse";
+            } else {
+                totalEl.classList.remove("text-rose-600");
+                totalEl.classList.add("text-teal-700");
+                const gInfo = calculateGradeJS(total);
+                gradeEl.innerText = gInfo.grade;
+                gradeEl.className = "px-2 py-1 font-bold text-xs rounded-lg bg-teal-100 text-teal-800";
+            }
+        }
+
         // RENDER LECTURER TABLE & ANALYTICS
         function renderLecturerStudentTable() {
             const filterScope = document.getElementById("filterLecScope").value;
@@ -686,7 +764,6 @@
             const scopeDesc = document.getElementById("scopeDescription");
             tbody.innerHTML = "";
 
-            // Sentiasa kekalkan susunan asal mengikut kedudukan dalam `allStudents` (Data Pelajar)
             let filtered = allStudents.map((stud, idx) => ({ ...stud, originalRowOrder: idx + 1 }));
 
             // 1. Tapis Mengikut Skop Pensyarah
@@ -709,7 +786,6 @@
 
             document.getElementById("studentCount").innerText = filtered.length;
 
-            // Kemaskini label skop pada tab Analisis
             const scopeText = (filterScope === "MY_STUDENTS" ? `Seliaan ${currentUser?.name || ''}` : "Semua Pensyarah") +
                               ` | Kelas: ${filterClass === 'ALL' ? 'Semua' : filterClass}` +
                               ` | Permainan: ${filterGame === 'ALL' ? 'Semua' : filterGame}`;
@@ -750,14 +826,17 @@
                     </td>
                     <td class="py-3 px-2 text-center">
                         <input type="number" step="0.1" min="0" max="60" id="hpp3_${stud.ic}" value="${stud.hpp3 || 0}"
+                            oninput="onMarkInput('${stud.ic}')"
                             class="w-16 px-2 py-1 text-center font-bold text-slate-800 clay-input">
                     </td>
                     <td class="py-3 px-2 text-center">
                         <input type="number" step="0.1" min="0" max="20" id="hpp2_${stud.ic}" value="${stud.hpp2 || 0}"
+                            oninput="onMarkInput('${stud.ic}')"
                             class="w-16 px-2 py-1 text-center font-bold text-slate-800 clay-input">
                     </td>
                     <td class="py-3 px-2 text-center">
                         <input type="number" step="0.1" min="0" max="20" id="hpp5_${stud.ic}" value="${stud.hpp5 || 0}"
+                            oninput="onMarkInput('${stud.ic}')"
                             class="w-16 px-2 py-1 text-center font-bold text-slate-800 clay-input">
                     </td>
                     <td class="py-3 px-2 text-center font-extrabold text-teal-700 text-sm" id="total_${stud.ic}">
@@ -779,20 +858,52 @@
                     </td>
                 `;
                 tbody.appendChild(tr);
+
+                // Jalankan validasi awal untuk memastikan sebarang data sedia ada disemak
+                setTimeout(() => onMarkInput(stud.ic), 50);
             });
 
             updateAnalyticsAndModeration(filtered);
         }
 
-        // SAVE INDIVIDUAL MARK BY LECTURER
+        // SAVE INDIVIDUAL MARK BY LECTURER WITH VALIDATION
         async function saveStudentMark(ic) {
             const stud = allStudents.find(s => s.ic === ic);
             if (!stud) return;
 
-            const hpp3 = parseFloat(document.getElementById(`hpp3_${ic}`).value) || 0;
-            const hpp2 = parseFloat(document.getElementById(`hpp2_${ic}`).value) || 0;
-            const hpp5 = parseFloat(document.getElementById(`hpp5_${ic}`).value) || 0;
+            const el3 = document.getElementById(`hpp3_${ic}`);
+            const el2 = document.getElementById(`hpp2_${ic}`);
+            const el5 = document.getElementById(`hpp5_${ic}`);
+
+            const hpp3 = parseFloat(el3.value) || 0;
+            const hpp2 = parseFloat(el2.value) || 0;
+            const hpp5 = parseFloat(el5.value) || 0;
             const catatan = document.getElementById(`catatan_${ic}`).value;
+
+            // ==========================================
+            // KAWALAN VALIDASI HAD MAKSIMUM (SEKATAN)
+            // ==========================================
+            if (hpp3 < 0 || hpp3 > 60) {
+                showToast(`Ralat Validasi: Markah HPP3 (${hpp3}%) untuk ${stud.name} melebihi had maksimum 60%!`, "error");
+                el3.focus();
+                return;
+            }
+            if (hpp2 < 0 || hpp2 > 20) {
+                showToast(`Ralat Validasi: Markah HPP2 (${hpp2}%) untuk ${stud.name} melebihi had maksimum 20%!`, "error");
+                el2.focus();
+                return;
+            }
+            if (hpp5 < 0 || hpp5 > 20) {
+                showToast(`Ralat Validasi: Markah HPP5 (${hpp5}%) untuk ${stud.name} melebihi had maksimum 20%!`, "error");
+                el5.focus();
+                return;
+            }
+
+            const total = hpp3 + hpp2 + hpp5;
+            if (total > 100) {
+                showToast(`Ralat Validasi: Jumlah markah (${total.toFixed(1)}%) melebihi 100%! Sila baiki data.`, "error");
+                return;
+            }
 
             const payload = {
                 ic: ic,
@@ -863,7 +974,6 @@
         function updateAnalyticsAndModeration(studentsList) {
             const dataset = studentsList || [];
 
-            // Reset UI jika tiada data
             if (!dataset.length) {
                 if (chartGradeObj) chartGradeObj.destroy();
                 if (chartPassObj) chartPassObj.destroy();
@@ -873,7 +983,6 @@
                 return;
             }
 
-            // Grade counts
             const gradeMap = { 'A+': 0, 'A': 0, 'A-': 0, 'B+': 0, 'B': 0, 'B-': 0, 'C+': 0, 'C': 0, 'Lain-lain': 0 };
             let passCount = 0;
             let failCount = 0;
