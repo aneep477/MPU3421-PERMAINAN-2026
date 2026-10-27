@@ -259,7 +259,7 @@
                             <tr>
                                 <th>#</th>
                                 <th class="text-left">Pelajar</th>
-                                <th>Kelas / Permainan</th>
+                                <th>Kelas - Permainan</th>
                                 <th>Penilai Dipilih</th>
                                 <th>HPP3 (60%)</th>
                                 <th>HPP2 (20%)</th>
@@ -286,8 +286,20 @@
                         <h3 class="font-serif-title text-xl font-bold text-slate-800">Analisis Taburan Gred &amp; Sisihan Piawai (SP) Real-Time</h3>
                         <p class="text-xs text-slate-500 mt-1">Dikira secara langsung berdasarkan markah terkumpul pelajar dalam pangkalan data.</p>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="loadGradeSummary()" class="clay-btn-outline px-3 py-2 text-xs text-teal-800"><i class="fas fa-sync me-1"></i> Segar Semula Stats</button>
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <div>
+                            <label class="dim-label">Tapis Permainan (Analisis)</label>
+                            <select id="reportGameFilter" onchange="loadGradeSummary()" class="clay-input text-xs font-bold">
+                                <option value="">Semua Permainan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="dim-label">Tapis Kelas (Analisis)</label>
+                            <select id="reportClassFilter" onchange="loadGradeSummary()" class="clay-input text-xs font-bold">
+                                <option value="">Semua Kelas</option>
+                            </select>
+                        </div>
+                        <button onclick="loadGradeSummary()" class="clay-btn-outline px-3 py-2 text-xs text-teal-800 mt-3"><i class="fas fa-sync me-1"></i> Segar Semula Stats</button>
                     </div>
                 </div>
 
@@ -336,35 +348,41 @@
             </div>
         </div>
 
-        <!-- TAB 3: SIMULASI SISIHAN PIAWAI (SP) -->
+        <!-- TAB 3: SIMULASI SISIHAN PIAWAI (SP) CANGGIH -->
         <div id="ltab-simulasi" style="display:none;">
             <div class="clay-card p-6">
                 <div class="flex justify-between items-center mb-4 border-b pb-3">
                     <div>
-                        <h3 class="font-serif-title text-xl font-bold text-slate-800">Simulasi Sisihan Piawai (SP)</h3>
-                        <p class="text-xs text-slate-500 mt-1">Fasa 1: Mengubah markah dalam sempadan gred sedia ada (Gred Kekal). Fasa 2: Penyesuaian merentas gred jika sasaran SP belum dicapai.</p>
+                        <h3 class="font-serif-title text-xl font-bold text-slate-800">Simulasi Sisihan Piawai (SP) Canggih</h3>
+                        <p class="text-xs text-slate-500 mt-1">Pilih permainan atau kelas tertentu untuk membuat simulasi sasaran SP terlaras.</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 bg-slate-100 p-4 rounded-2xl border border-slate-200">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-6 bg-slate-100 p-4 rounded-2xl border border-slate-200">
                     <div>
-                        <label class="dim-label">Sasaran Sisihan Piawai (SP)</label>
+                        <label class="dim-label">Permainan Terlibat</label>
+                        <select id="simGameFilter" class="clay-input w-full text-xs font-bold bg-white">
+                            <option value="">Semua Permainan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="dim-label">Sasaran SP</label>
                         <input type="number" id="simTargetSP" value="5.5" step="0.1" class="clay-input w-full text-xs font-bold text-center">
                     </div>
                     <div>
-                        <label class="dim-label">Had Maksimum Delta (m)</label>
+                        <label class="dim-label">Had Maks Delta (m)</label>
                         <input type="number" id="simMaxDelta" value="3.0" step="0.5" class="clay-input w-full text-xs font-bold text-center">
                     </div>
                     <div>
                         <label class="dim-label">Mod Penyesuaian Gred</label>
                         <select id="simGradeMode" class="clay-input w-full text-xs font-bold bg-white">
                             <option value="strict">Fasa 1: Gred Kekal Sahaja</option>
-                            <option value="flexible">Fasa 2: Benarkan Perubahan Gred (Bila Perlu)</option>
+                            <option value="flexible">Fasa 2: Benarkan Perubahan Gred</option>
                         </select>
                     </div>
                     <div class="flex items-end">
                         <button onclick="runSPSimulation()" class="clay-btn w-full py-2.5 text-xs bg-purple-800">
-                            <i class="fas fa-play me-1"></i> Jalankan Simulasi SP
+                            <i class="fas fa-play me-1"></i> Jalankan Simulasi
                         </button>
                     </div>
                 </div>
@@ -397,7 +415,7 @@
                             <tr>
                                 <th>Bil</th>
                                 <th class="text-left">Nama Pelajar</th>
-                                <th>Kelas</th>
+                                <th>Kelas - Permainan</th>
                                 <th>Asal (100%)</th>
                                 <th>Target Simulasi (100%)</th>
                                 <th>Delta (m)</th>
@@ -407,7 +425,7 @@
                             </tr>
                         </thead>
                         <tbody id="simTableBody">
-                            <tr><td colspan="9" class="p-6 text-slate-400 text-xs">Tekan "Jalankan Simulasi SP" untuk melihat cadangan penyesuaian markah.</td></tr>
+                            <tr><td colspan="9" class="p-6 text-slate-400 text-xs">Tekan "Jalankan Simulasi" untuk melihat cadangan penyesuaian markah.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -422,7 +440,7 @@
                 <button onclick="loadModeration()" class="clay-btn-outline px-3 py-1.5 mb-4 text-xs"><i class="fas fa-sync me-1"></i> Segarkan Sampel Moderasi</button>
                 <div class="overflow-x-auto border rounded-xl bg-white">
                     <table class="academic-table text-center">
-                        <thead><tr><th>Bil</th><th>Nama Pelajar</th><th>Kelas / Permainan</th><th>Markah (%)</th><th>Gred</th><th>Pensyarah Penilai</th></tr></thead>
+                        <thead><tr><th>Bil</th><th>Nama Pelajar</th><th>Kelas - Permainan</th><th>Markah (%)</th><th>Gred</th><th>Pensyarah Penilai</th></tr></thead>
                         <tbody id="moderationBody"></tbody>
                     </table>
                 </div>
@@ -466,9 +484,12 @@ function calcGredMPU3421(total100) {
     return "F";
 }
 
-/**
- * FUNGSI PADANAN PENSYARAH DWI-ARAH (FLEXIBLE MATCHING)
- */
+function getSafePermainan(s) {
+    if (!s) return 'Belum Pilih';
+    let p = s.PERMAINAN || s.permainan || s.permainaan || (s.markahSediaAda ? s.markahSediaAda.permainan : '');
+    return (p && p.toString().trim() !== '') ? p.toString().trim() : 'Belum Pilih';
+}
+
 function isMatchingLecturer(studentPensyarah, loggedInLecturerName, loggedInLecturerEmail) {
     if (!studentPensyarah) return false;
 
@@ -476,14 +497,11 @@ function isMatchingLecturer(studentPensyarah, loggedInLecturerName, loggedInLect
     const ln = (loggedInLecturerName || "").toString().trim().toLowerCase();
     const le = (loggedInLecturerEmail || "").toString().trim().toLowerCase();
 
-    // 1. Padanan langsung dwiarah
     if (sp.includes(ln) || ln.includes(sp)) return true;
 
-    // 2. Padanan berasaskan awalan emel (cth: haniff.faizal)
     const emailPrefix = le.split('@')[0].replace(/[\._-]/g, ' ');
     if (emailPrefix.length > 3 && (sp.includes(emailPrefix) || emailPrefix.includes(sp))) return true;
 
-    // 3. Padanan kata kunci penting (mengabaikan perkataan umum)
     const ignoreWords = ['bin', 'binti', 'bt', 'b', 'dr', 'drak', 'pkm', 'ku', 'jhep', 'jppi'];
     const spWords = sp.split(/[\s._-]+/).filter(w => w.length > 2 && !ignoreWords.includes(w));
     const lnWords = ln.split(/[\s._-]+/).filter(w => w.length > 2 && !ignoreWords.includes(w));
@@ -543,7 +561,7 @@ async function renderStudentUI(d) {
     document.getElementById('sN').innerText = d.Nama_Pelajar;
     document.getElementById('sK').innerText = `${d.No_KP} | ${d.Kelas}`;
 
-    document.getElementById('sPermainanIn').value = d.PERMAINAN || "";
+    document.getElementById('sPermainanIn').value = getSafePermainan(d);
 
     try {
         const r = await fetch(`${API}?action=getLecturers`);
@@ -605,14 +623,22 @@ function populateFilters() {
     const classSet = new Set(), gameSet = new Set();
     sData.forEach(s => {
         if (s.Kelas) classSet.add(s.Kelas.trim());
-        if (s.PERMAINAN) gameSet.add(s.PERMAINAN.trim());
+        const g = getSafePermainan(s);
+        if (g && g !== 'Belum Pilih') gameSet.add(g);
     });
 
-    const cf = document.getElementById('classFilter');
-    if (cf) cf.innerHTML = '<option value="">Semua Kelas</option>' + Array.from(classSet).sort().map(c => `<option value="${c}">${c}</option>`).join('');
+    const classOptions = '<option value="">Semua Kelas</option>' + Array.from(classSet).sort().map(c => `<option value="${c}">${c}</option>`).join('');
+    const gameOptions = '<option value="">Semua Permainan</option>' + Array.from(gameSet).sort().map(g => `<option value="${g}">${g}</option>`).join('');
 
-    const gf = document.getElementById('gameFilter');
-    if (gf) gf.innerHTML = '<option value="">Semua Permainan</option>' + Array.from(gameSet).sort().map(g => `<option value="${g}">${g}</option>`).join('');
+    ['classFilter', 'reportClassFilter'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = classOptions;
+    });
+
+    ['gameFilter', 'reportGameFilter', 'simGameFilter'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = gameOptions;
+    });
 }
 
 function filterStudents() {
@@ -625,10 +651,12 @@ function filterStudents() {
     if (!tbody) return;
 
     const filtered = sData.filter(s => {
-        // MENGGUNAKAN PADANAN DWI-ARAH isMatchingLecturer
         const matchScope = scope === 'all' || isMatchingLecturer(s.Pensyarah, curLecName, curLec);
         const matchClass = !selectedClass || s.Kelas.trim() === selectedClass;
-        const matchGame = !selectedGame || s.PERMAINAN.trim().toLowerCase() === selectedGame.toLowerCase();
+        
+        const g = getSafePermainan(s);
+        const matchGame = !selectedGame || g.toLowerCase() === selectedGame.toLowerCase();
+        
         const matchSearch = !search || s.Nama_Pelajar.toLowerCase().includes(search) || s.No_KP.includes(search);
         return matchScope && matchClass && matchGame && matchSearch;
     });
@@ -645,6 +673,7 @@ function filterStudents() {
         const h5 = m.hpp5 !== undefined ? m.hpp5 : 0;
         const tot = Number((h3 + h2 + h5).toFixed(2));
         const gred = calcGredMPU3421(tot);
+        const permText = getSafePermainan(s);
 
         return `
             <tr id="row_${s.No_KP}">
@@ -653,7 +682,7 @@ function filterStudents() {
                     <div class="font-bold text-slate-800 text-xs">${s.Nama_Pelajar}</div>
                     <div class="font-mono-score text-[10px] text-slate-500">${s.No_KP}</div>
                 </td>
-                <td><span class="font-bold text-teal-800 text-xs">${s.Kelas}</span><br><span class="text-[10px] text-slate-500">${s.PERMAINAN || '-'}</span></td>
+                <td><span class="font-bold text-teal-800 text-xs">${s.Kelas} - ${permText}</span></td>
                 <td class="text-xs font-bold text-slate-700">${s.Pensyarah || '-'}</td>
                 <td>
                     <input type="number" id="h3_${s.No_KP}" value="${h3}" min="0" max="60" step="0.5"
@@ -738,6 +767,8 @@ async function saveMarkUI(kp) {
     btn.disabled = true;
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
 
+    const permText = getSafePermainan(stud);
+
     try {
         await fetch(API, {
             method: 'POST',
@@ -746,7 +777,7 @@ async function saveMarkUI(kp) {
                 noKP: kp,
                 nama: stud.Nama_Pelajar,
                 kelas: stud.Kelas,
-                permainaan: stud.PERMAINAN,
+                permainaan: permText,
                 pensyarah: stud.Pensyarah || curLecName,
                 hpp3: v3,
                 hpp2: v2,
@@ -785,13 +816,14 @@ function showLecTab(tab) {
 }
 
 async function loadGradeSummary() {
-    const selectedClass = document.getElementById('classFilter') ? document.getElementById('classFilter').value : "";
-    const selectedGame = document.getElementById('gameFilter') ? document.getElementById('gameFilter').value : "";
+    const selectedClass = document.getElementById('reportClassFilter') ? document.getElementById('reportClassFilter').value : "";
+    const selectedGame = document.getElementById('reportGameFilter') ? document.getElementById('reportGameFilter').value : "";
 
     const validScores = sData
         .filter(s => {
             const matchClass = !selectedClass || s.Kelas.trim() === selectedClass;
-            const matchGame = !selectedGame || s.PERMAINAN.trim().toLowerCase() === selectedGame.toLowerCase();
+            const g = getSafePermainan(s);
+            const matchGame = !selectedGame || g.toLowerCase() === selectedGame.toLowerCase();
             return matchClass && matchGame && s.markahSediaAda && Number(s.markahSediaAda.total) > 0;
         })
         .map(s => Number(s.markahSediaAda.total));
@@ -846,9 +878,15 @@ async function loadGradeSummary() {
 function runSPSimulation() {
     const maxDelta = parseFloat(document.getElementById('simMaxDelta').value) || 3.0;
     const mode = document.getElementById('simGradeMode').value;
+    const selectedGame = document.getElementById('simGameFilter').value;
 
-    const validStudents = sData.filter(s => s.markahSediaAda && Number(s.markahSediaAda.total) > 0);
-    if (!validStudents.length) return showToast('Tiada markah pelajar tersedia untuk simulasi', 'warn');
+    const validStudents = sData.filter(s => {
+        const g = getSafePermainan(s);
+        const matchGame = !selectedGame || g.toLowerCase() === selectedGame.toLowerCase();
+        return matchGame && s.markahSediaAda && Number(s.markahSediaAda.total) > 0;
+    });
+
+    if (!validStudents.length) return showToast('Tiada markah pelajar tersedia bagi permainan dipilih.', 'warn');
 
     let currentScores = validStudents.map(s => Number(s.markahSediaAda.total));
     let mean = currentScores.reduce((a,b)=>a+b, 0) / currentScores.length;
@@ -889,6 +927,7 @@ function runSPSimulation() {
             noKP: s.No_KP,
             nama: s.Nama_Pelajar,
             kelas: s.Kelas,
+            permainan: getSafePermainan(s),
             origScore: origScore,
             targetScore: Number(targetScore.toFixed(1)),
             delta: Number((targetScore - origScore).toFixed(1)),
@@ -914,7 +953,7 @@ function runSPSimulation() {
         <tr class="${r.origGred !== r.newGred ? 'bg-amber-50' : ''}">
             <td>${i+1}</td>
             <td class="text-left font-bold text-xs">${r.nama}</td>
-            <td>${r.kelas}</td>
+            <td><span class="font-bold text-teal-800 text-xs">${r.kelas} - ${r.permainan}</span></td>
             <td class="font-mono-score font-bold">${r.origScore}%</td>
             <td class="font-mono-score font-bold text-purple-700">${r.targetScore}%</td>
             <td class="font-mono-score text-xs ${r.delta >= 0 ? 'text-teal-700' : 'text-rose-600'}">${r.delta >= 0 ? '+'+r.delta : r.delta}</td>
@@ -960,8 +999,8 @@ async function applySimulationToSheet() {
 }
 
 async function loadModeration() {
-    const selectedClass = document.getElementById('classFilter') ? document.getElementById('classFilter').value : "";
-    const selectedGame = document.getElementById('gameFilter') ? document.getElementById('gameFilter').value : "";
+    const selectedClass = document.getElementById('reportClassFilter') ? document.getElementById('reportClassFilter').value : "";
+    const selectedGame = document.getElementById('reportGameFilter') ? document.getElementById('reportGameFilter').value : "";
 
     try {
         const r = await fetch(`${API}?action=getModerationSampling&email=${encodeURIComponent(curLec)}&kelas=${encodeURIComponent(selectedClass)}&permainaan=${encodeURIComponent(selectedGame)}`);
@@ -972,7 +1011,7 @@ async function loadModeration() {
             <tr>
                 <td class="font-mono-score">${i+1}</td>
                 <td class="font-bold text-left">${s.nama}</td>
-                <td><span class="font-bold text-teal-800">${s.kelas}</span> - ${s.permainaan}</td>
+                <td><span class="font-bold text-teal-800">${s.kelas} - ${s.permainaan || s.permainan || 'Belum Pilih'}</span></td>
                 <td class="font-mono-score font-bold text-teal-700">${s.markah.toFixed(1)}%</td>
                 <td class="font-serif-title font-bold">${s.gred}</td>
                 <td class="text-xs font-bold text-slate-700">${s.pensyarah || '-'}</td>
