@@ -27,7 +27,6 @@
         .font-serif-title { font-family: 'Lora', serif; }
         .font-mono-score { font-family: 'Space Mono', monospace; }
 
-        /* CLAYMORPHISM UI DESIGN */
         .clay-card {
             background: #f0f4f8;
             border-radius: 1.5rem;
@@ -69,10 +68,6 @@
             transform: translateY(-2px);
             box-shadow: 6px 6px 12px #cbd5e1, -6px -6px 12px #ffffff;
         }
-        .clay-btn:active {
-            transform: translateY(0);
-            box-shadow: inset 2px 2px 4px #094e48, inset -2px -2px 4px #199e94;
-        }
 
         .clay-btn-outline {
             background: #f0f4f8;
@@ -82,9 +77,6 @@
             font-weight: 700;
             transition: all 0.2s;
             cursor: pointer;
-        }
-        .clay-btn-outline:hover {
-            background: #e2e8f0;
         }
 
         #toast { position: fixed; top: 24px; right: 24px; z-index: 9999; transform: translateX(120%); transition: transform 0.3s ease; }
@@ -105,7 +97,7 @@
     <div class="clay-card px-5 py-4 flex items-center gap-3 text-sm font-bold" id="toastMsg"></div>
 </div>
 
-<!-- SCREEN LOG MASUK PORTAL -->
+<!-- LOG MASUK -->
 <div class="min-h-screen flex items-center justify-center p-6" id="loginScreen">
     <div class="clay-card w-full p-8 sm:p-10" style="max-width:440px;">
         <div class="text-center mb-6">
@@ -259,11 +251,6 @@
                             <input type="text" id="searchStudent" placeholder="Nama / KP..." onkeyup="filterStudents()" class="clay-input text-xs font-bold">
                         </div>
                     </div>
-                </div>
-
-                <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 mb-4 flex items-center gap-2">
-                    <i class="fas fa-shield-alt text-amber-600 text-sm"></i>
-                    <span><strong>Kawalan Validasi Markah:</strong> HPP3 Ujian Amali (Maksimum 60%), HPP2 Simulasi (Maksimum 20%), HPP5 Simulasi (Maksimum 20%). Markah berlebihan akan disekat automatik.</span>
                 </div>
 
                 <div class="overflow-x-auto border rounded-xl bg-white">
@@ -479,6 +466,31 @@ function calcGredMPU3421(total100) {
     return "F";
 }
 
+/**
+ * FUNGSI PADANAN PENSYARAH DWI-ARAH (FLEXIBLE MATCHING)
+ */
+function isMatchingLecturer(studentPensyarah, loggedInLecturerName, loggedInLecturerEmail) {
+    if (!studentPensyarah) return false;
+
+    const sp = studentPensyarah.toString().trim().toLowerCase();
+    const ln = (loggedInLecturerName || "").toString().trim().toLowerCase();
+    const le = (loggedInLecturerEmail || "").toString().trim().toLowerCase();
+
+    // 1. Padanan langsung dwiarah
+    if (sp.includes(ln) || ln.includes(sp)) return true;
+
+    // 2. Padanan berasaskan awalan emel (cth: haniff.faizal)
+    const emailPrefix = le.split('@')[0].replace(/[\._-]/g, ' ');
+    if (emailPrefix.length > 3 && (sp.includes(emailPrefix) || emailPrefix.includes(sp))) return true;
+
+    // 3. Padanan kata kunci penting (mengabaikan perkataan umum)
+    const ignoreWords = ['bin', 'binti', 'bt', 'b', 'dr', 'drak', 'pkm', 'ku', 'jhep', 'jppi'];
+    const spWords = sp.split(/[\s._-]+/).filter(w => w.length > 2 && !ignoreWords.includes(w));
+    const lnWords = ln.split(/[\s._-]+/).filter(w => w.length > 2 && !ignoreWords.includes(w));
+
+    return spWords.some(w => lnWords.includes(w));
+}
+
 function switchLoginRole(role) {
     currentRole = role;
     document.getElementById('btnRoleStudent').className = role === 'student' ? 'flex-1 py-2 text-xs font-bold text-teal-800 border-b-2 border-teal-800' : 'flex-1 py-2 text-xs font-bold text-slate-400 border-b-2 border-transparent';
@@ -613,7 +625,8 @@ function filterStudents() {
     if (!tbody) return;
 
     const filtered = sData.filter(s => {
-        const matchScope = scope === 'all' || (s.Pensyarah && s.Pensyarah.toLowerCase().includes(curLecName.toLowerCase()));
+        // MENGGUNAKAN PADANAN DWI-ARAH isMatchingLecturer
+        const matchScope = scope === 'all' || isMatchingLecturer(s.Pensyarah, curLecName, curLec);
         const matchClass = !selectedClass || s.Kelas.trim() === selectedClass;
         const matchGame = !selectedGame || s.PERMAINAN.trim().toLowerCase() === selectedGame.toLowerCase();
         const matchSearch = !search || s.Nama_Pelajar.toLowerCase().includes(search) || s.No_KP.includes(search);
@@ -771,9 +784,6 @@ function showLecTab(tab) {
     if (tab === 'moderasi') loadModeration();
 }
 
-/* ============================================================
- * FUNGSI ANALISIS GRED MASA NYATA (STATISTIK REAL-TIME SP & MEAN)
- * ============================================================ */
 async function loadGradeSummary() {
     const selectedClass = document.getElementById('classFilter') ? document.getElementById('classFilter').value : "";
     const selectedGame = document.getElementById('gameFilter') ? document.getElementById('gameFilter').value : "";
@@ -833,9 +843,6 @@ async function loadGradeSummary() {
     } catch(e){}
 }
 
-/* ============================================================
- * ENJIN SIMULASI SISIHAN PIAWAI (SP) CANGGIH
- * ============================================================ */
 function runSPSimulation() {
     const maxDelta = parseFloat(document.getElementById('simMaxDelta').value) || 3.0;
     const mode = document.getElementById('simGradeMode').value;
