@@ -498,23 +498,43 @@ function getSafePermainan(s) {
     return (p && p.toString().trim() !== '') ? p.toString().trim() : 'Belum Pilih';
 }
 
+/**
+ * FUNGSI PADANAN PENSYARAH DENGAN PENYEMAKAN NAMA UTAMA (MENGELAKKAN PERPADANAN PALSU SPERTI ABDUL SATAR VS ABDUL HAKIM)
+ */
 function isMatchingLecturer(studentPensyarah, loggedInLecturerName, loggedInLecturerEmail) {
     if (!studentPensyarah) return false;
 
-    const sp = studentPensyarah.toString().trim().toLowerCase();
-    const ln = (loggedInLecturerName || "").toString().trim().toLowerCase();
-    const le = (loggedInLecturerEmail || "").toString().trim().toLowerCase();
+    let sp = studentPensyarah.toString().trim().toLowerCase();
+    let ln = (loggedInLecturerName || "").toString().trim().toLowerCase();
+    let le = (loggedInLecturerEmail || "").toString().trim().toLowerCase();
 
-    if (sp.includes(ln) || ln.includes(sp)) return true;
+    // Buang gelaran seperti Dr., En., Puan, Ustaz
+    const titleRegex = /^(dr\.|dr|en\.|en|puan|pn\.|pn|ustaz|ustazah)\s+/gi;
+    sp = sp.replace(titleRegex, '').trim();
+    ln = ln.replace(titleRegex, '').trim();
 
-    const emailPrefix = le.split('@')[0].replace(/[\._-]/g, ' ');
-    if (emailPrefix.length > 3 && (sp.includes(emailPrefix) || emailPrefix.includes(sp))) return true;
+    // 1. Padanan tepat atau substring nama penuh
+    if (sp === ln) return true;
+    if (sp.length > 5 && (sp.includes(ln) || ln.includes(sp))) return true;
 
-    const ignoreWords = ['bin', 'binti', 'bt', 'b', 'dr', 'drak', 'pkm', 'ku', 'jhep', 'jppi'];
-    const spWords = sp.split(/[\s._-]+/).filter(w => w.length > 2 && !ignoreWords.includes(w));
-    const lnWords = ln.split(/[\s._-]+/).filter(w => w.length > 2 && !ignoreWords.includes(w));
+    // 2. Padanan berasaskan awalan emel (cth: abdulsatar / hanifffaizal)
+    const emailPrefix = le.split('@')[0].replace(/[\._-]/g, '');
+    const spNoSpace = sp.replace(/[\s._-]/g, '');
+    const lnNoSpace = ln.replace(/[\s._-]/g, '');
 
-    return spWords.some(w => lnWords.includes(w));
+    if (emailPrefix.length > 3 && (spNoSpace.includes(emailPrefix) || emailPrefix.includes(spNoSpace))) return true;
+
+    // 3. Semak NAMA UTAMA (sebelum perkataan BIN / BINTI / BT)
+    const spFirstName = sp.split(/\b(bin|binti|bt|b)\b/i)[0].trim();
+    const lnFirstName = ln.split(/\b(bin|binti|bt|b)\b/i)[0].trim();
+
+    if (spFirstName && lnFirstName && spFirstName.length > 3 && lnFirstName.length > 3) {
+        if (spFirstName === lnFirstName || spFirstName.includes(lnFirstName) || lnFirstName.includes(spFirstName)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function switchLoginRole(role) {
@@ -578,14 +598,14 @@ function applyAccessControlUI() {
         if (btnMod) btnMod.style.display = 'inline-block';
         if (scopeSel) {
             scopeSel.disabled = false;
-            scopeSel.value = 'all'; // Admin lihat semua secara lalai
+            scopeSel.value = 'all';
         }
         if (optAll) optAll.style.display = 'block';
     } else {
         if (btnSim) btnSim.style.display = 'none';
         if (btnMod) btnMod.style.display = 'none';
         if (scopeSel) {
-            scopeSel.value = 'mine'; // Dikunci kepada pelajar seliaan sahaja
+            scopeSel.value = 'mine';
             scopeSel.disabled = true;
         }
         if (optAll) optAll.style.display = 'none';
@@ -689,7 +709,6 @@ function filterStudents() {
     if (!tbody) return;
 
     const filtered = sData.filter(s => {
-        // PENSYARAH BIASA HANYA NAMPAK PELAJAR SELIAAN SENDIRI (KECUALI ADMIN)
         const matchScope = isAdmin ? (scope === 'all' || isMatchingLecturer(s.Pensyarah, curLecName, curLec)) : isMatchingLecturer(s.Pensyarah, curLecName, curLec);
         const matchClass = !selectedClass || s.Kelas.trim() === selectedClass;
         
@@ -840,7 +859,6 @@ async function saveMarkUI(kp) {
 }
 
 function showLecTab(tab) {
-    // SEKATAN TAMBAHAN DI FRONTEND UNTUK TERMASUK TAB ADMIN
     if ((tab === 'simulasi' || tab === 'moderasi') && !isAdmin) {
         showToast('Akses Ditolak: Modul ini hanya untuk Admin.', 'warn');
         return;
