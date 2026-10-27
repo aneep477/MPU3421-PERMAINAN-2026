@@ -435,8 +435,9 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // BACKEND URL STORAGE
-        let SCRIPT_URL = localStorage.getItem("https://script.google.com/macros/s/AKfycbww2tvGdHQhvbYNbUY_zFocM9YiNpPez93iuHY4JpZ2yrh4tZRVSEzdY35tGnJJhPaP-Q/exec") || "";
+        // BACKEND URL STORAGE (DIKEMASKINI DENGAN URL ANDA)
+        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbww2tvGdHQhvbYNbUY_zFocM9YiNpPez93iuHY4JpZ2yrh4tZRVSEzdY35tGnJJhPaP-Q/exec";
+        let SCRIPT_URL = localStorage.getItem("MPU3421_SCRIPT_URL") || DEFAULT_SCRIPT_URL;
 
         // STATE DATA
         let currentRole = "pelajar"; // "pelajar" | "pensyarah"
@@ -450,11 +451,7 @@
 
         // INITIALIZATION
         window.addEventListener("DOMContentLoaded", () => {
-            if (!SCRIPT_URL) {
-                openApiModal();
-            } else {
-                fetchInitialData();
-            }
+            fetchInitialData();
         });
 
         // MODAL SETTINGS
@@ -497,18 +494,20 @@
         async function fetchInitialData() {
             if (!SCRIPT_URL) return;
             try {
+                showToast("Memuatkan data dari Google Sheets...", "info");
                 const response = await fetch(SCRIPT_URL + "?action=getInitialData");
                 const res = await response.json();
                 if (res.success) {
                     allStudents = res.students || [];
                     allLecturers = res.lecturers || [];
                     populateLecturerDropdowns();
+                    hideToast();
                 } else {
                     showToast("Gagal memuatkan data: " + res.message, "error");
                 }
             } catch (err) {
                 console.error("Fetch Error:", err);
-                showToast("Ralat sambungan ke backend Google Apps Script.", "error");
+                showToast("Ralat sambungan ke backend Google Apps Script. Sila semak tetapan CORS/Access.", "error");
             }
         }
 
